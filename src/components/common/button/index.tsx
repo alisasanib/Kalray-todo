@@ -1,11 +1,14 @@
 import Button, { ButtonProps } from "@mui/material/Button";
-import './Button.sass';
+import "./Button.sass";
 
-
-type CustomButtonProps = ButtonProps;
-
-const CustomButton = (props: CustomButtonProps) => {
-  return <Button className="button" {...props}>{props.children}</Button>;
+const CustomButton: React.FC<ButtonProps> = (props) => {
+  return (
+    <Button
+      className='button'
+      {...props}>
+      {props.children}
+    </Button>
+  );
 };
 
 export default CustomButton;

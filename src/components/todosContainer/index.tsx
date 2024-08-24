@@ -11,7 +11,7 @@ import { Select, Button, Modal, Checkbox, Input, Table } from "../common";
 import { useFetchTodos, usePagination, useSort, useModal, useObserver } from "../../hooks";
 import "./TodosContainer.sass";
 
-const TodosContainer = () => {
+const TodosContainer: React.FC = () => {
   const { todos, setTodos, error, isLoading } = useFetchTodos();
   const [isInfiniteScrolling, setIsInfiniteScrolling] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");

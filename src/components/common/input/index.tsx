@@ -8,19 +8,17 @@ import {
 } from "@mui/material";
 import { ReactNode } from "react";
 
-type AdornmentProps = Partial<InputAdornmentProps>;
-
 interface InputProps {
   helperText?: string;
   endIcon?: ReactNode | string;
-  startIconProps?: AdornmentProps;
-  endIconProps?: AdornmentProps;
+  startIconProps?: Partial<InputAdornmentProps>;
+  endIconProps?: Partial<InputAdornmentProps>;
   startIcon?: ReactNode | string;
   style?: React.CSSProperties;
   inputProps: Partial<OutlinedInputProps>;
 }
 
-const Input = (props: InputProps) => {
+const Input: React.FC<InputProps> = (props) => {
   return (
     <FormControl
       sx={{ m: 1, width: "100%", ...props.style }}

@@ -20,7 +20,7 @@ interface ModalProps {
   maxHeight?: string;
 }
 
-export default function Modal({
+const Modal: React.FC<ModalProps> = ({
   visible,
   handleClose,
   onOK,
@@ -33,7 +33,7 @@ export default function Modal({
   height = "300px",
   maxWidth = "80%",
   maxHeight = "70%",
-}: ModalProps) {
+}) => {
   return (
     <Dialog
       PaperProps={{
@@ -71,4 +71,4 @@ export default function Modal({
       </DialogActions>
     </Dialog>
   );
-}
+};

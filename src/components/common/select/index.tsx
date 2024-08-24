@@ -13,7 +13,7 @@ interface CustomSelectProps {
   style?: React.CSSProperties;
 }
 
-const CustomSelect = (props: CustomSelectProps) => {
+const CustomSelect: React.FC<CustomSelectProps> = (props) => {
   return (
     <Select
       sx={props.style}
