@@ -10,7 +10,7 @@ jest.mock("../../hooks/useSort");
 jest.mock("../../hooks/useModal");
 jest.mock("../../hooks/useObserver");
 
-describe("TodosContainer", () => {
+describe("TodosContainer integration", () => {
   const todosMockData = [
     { id: 1, content: "Test Todo 1", done: false },
     { id: 2, content: "Another Todo", done: true },
@@ -58,7 +58,7 @@ describe("TodosContainer", () => {
     });
   });
 
-  it("should render loading state", () => {
+  test("should render loading state", () => {
     (useFetchTodos as jest.Mock).mockReturnValueOnce({
       todos: [],
       setTodos: jest.fn(),
@@ -71,7 +71,7 @@ describe("TodosContainer", () => {
     expect(screen.getByText("Loading todos...")).toBeInTheDocument();
   });
 
-  it("renders error message when there is an error", () => {
+  test("renders error message when there is an error", () => {
     (useFetchTodos as jest.Mock).mockReturnValueOnce({
       todos: [],
       setTodos: jest.fn(),
@@ -84,14 +84,14 @@ describe("TodosContainer", () => {
     expect(screen.getByText("Error loading todos")).toBeInTheDocument();
   });
 
-  it("should display todos when data is loaded", () => {
+  test("should display todos when data is loaded", () => {
     render(<TodosContainer />);
 
     expect(screen.getByText("Test Todo 1")).toBeInTheDocument();
     expect(screen.getByText("Another Todo")).toBeInTheDocument();
   });
 
-  it("should filter todos based on search input", async () => {
+  test("should filter todos based on search input", async () => {
     render(<TodosContainer />);
 
     const searchInput = screen.getByPlaceholderText("Search...");
@@ -103,7 +103,7 @@ describe("TodosContainer", () => {
     });
   });
 
-  it("should add a new todo", async () => {
+  test("should add a new todo", async () => {
     (useModal as jest.Mock).mockReturnValueOnce({
       selectedTodo: { id: 3, content: "New Todo", done: false },
       isModalOpen: true,
@@ -133,7 +133,7 @@ describe("TodosContainer", () => {
       expect(screen.getByText("New Todo")).toBeInTheDocument();
     });
   });
-  it("should toggles infinite scrolling mode", () => {
+  test("should toggles infinite scrolling mode", () => {
     render(<TodosContainer />);
 
     const infiniteScrollCheckbox = screen.getByLabelText("Infinite scrolling") as HTMLInputElement;
