@@ -1,0 +1,31 @@
+@import '../../variables'
+
+.table
+    width: 100%
+    border-collapse: collapse
+    box-shadow: $shadow-lg
+
+.table-header
+    border-bottom: 1px solid $base-gray-400
+    background: $pixit-primary-dark-green-2
+    color: $white
+    font-weight: $font-weight-bold
+    padding: 10px
+    cursor: pointer
+    text-align: left
+    height: 20px
+
+.table-cell
+    padding: 10px
+    text-align: left
+
+.table-header:first-child 
+    border-top-left-radius: 8px
+
+.table-header:last-child 
+    border-top-right-radius: 8px
+
+.table-header-row
+    position: sticky
+    top: 0px
+    z-index: 1
