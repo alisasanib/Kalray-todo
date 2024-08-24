@@ -4,6 +4,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import WarningIcon from "@mui/icons-material/Warning";
 import { SelectChangeEvent } from "@mui/material";
 import { Todo } from "../../types/todo.dto";
 import Input from "../common/input";
@@ -183,25 +184,22 @@ const TodosContainer = () => {
           startIcon={<SearchIcon />}
           endIcon={<CloseIcon />}
         />
-        {!isInfiniteScrolling && (
-          <Select
-            value={itemsPerPage}
-            onChange={handleItemsPerPageChange}
-            options={[
-              { value: 10, label: "10 items per page" },
-              { value: todos.length, label: "All items" },
-            ]}
-          />
-        )}
         <CustomButton
           sx={{ height: "50px" }}
           variant='contained'
-          onClick={handleAddTask}>
+          onClick={handleAddTask}
+          disabled={!!error || isLoading}
+          >
           Add new task
         </CustomButton>
       </div>
-      {isLoading && <p>Loading todos...</p>} {/* Show loading indicator */}
-      {error && <p className='error'>{error}</p>} {/* Show error message if there is an error */}
+      {isLoading && <p>Loading todos...</p>}
+      {error && (
+        <div className='todos-container-error'>
+          <WarningIcon />
+          <span>{error}</span>
+        </div>
+      )}
       <div>
         {displayedTodos.length > 0 && (
           <Table<Todo>
