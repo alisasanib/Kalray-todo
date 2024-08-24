@@ -1,9 +1,10 @@
-import { useEffect, useContext } from 'react';
+import { useEffect, useContext } from "react";
 
-import { AppContext } from '../../context/AppContext';
-import TopBar from '../topbar/TopBar';
+import { AppContext } from "../../context/AppContext";
+import TopBar from "../topbar/TopBar";
+import TodosContainer from "../todosContainer";
 
-import './Home.sass';
+import "./Home.sass";
 
 /*
     Setup:
@@ -46,28 +47,28 @@ import './Home.sass';
 */
 
 const Home: React.FC = () => {
-    const { leftBarShown, onToggleLeftBarShown } = useContext(AppContext);
+  const { leftBarShown, onToggleLeftBarShown } = useContext(AppContext);
 
-    useEffect(() => {
-        document.title = 'Tasks to do';
+  useEffect(() => {
+    document.title = "Tasks to do";
 
-        if (!leftBarShown) {
-            onToggleLeftBarShown(true);
-        }
-        // eslint-disable-next-line
-    }, []);
+    if (!leftBarShown) {
+      onToggleLeftBarShown(true);
+    }
+    // eslint-disable-next-line
+  }, []);
 
-    return (
-        <div>
-            <TopBar label="Tasks to do" />
+  return (
+    <div>
+      <TopBar label='Tasks to do' />
 
-            <div className="home">
-                <div className="home-content">
-                    - Content should be here -
-                </div>
-            </div>
+      <div className='home'>
+        <div className='home-content'>
+          <TodosContainer />
         </div>
-    )
+      </div>
+    </div>
+  );
 };
 
 export default Home;
