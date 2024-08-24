@@ -15,6 +15,7 @@ import Table from "../common/table";
 import useFetchTodos from "../../hooks/useFetchTodos";
 import usePagination from "../../hooks/usePagination";
 import useSort from "../../hooks/useSort";
+import useObserver from "../../hooks/useObserver";
 import "./TodosContainer.sass";
 
 const TodosContainer = () => {
@@ -28,6 +29,8 @@ const TodosContainer = () => {
 
   const { sortConfig, handleSort } = useSort(todos, setTodos);
 
+  const observerRef = useObserver(isInfiniteScrolling, () => setPaginationIndex((prev) => prev + 1));
+
   const togglePaginationMode = useCallback(() => {
     setIsInfiniteScrolling((prev) => !prev);
     setPaginationIndex(0);
@@ -35,6 +38,16 @@ const TodosContainer = () => {
 
   const handleSearch = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
+  }, []);
+
+  const handleSwitchStatus = useCallback((row: Todo) => {
+    setTodos((prevState) =>
+      prevState.map((todo) =>
+        todo.id === row.id
+          ? { ...todo, done: !todo.done, done_time: todo.done ? null : new Date().toISOString().slice(0, 19) }
+          : todo
+      )
+    );
   }, []);
 
   const handleItemsPerPageChange = useCallback((event: SelectChangeEvent<number>) => {
@@ -51,6 +64,7 @@ const TodosContainer = () => {
             <CustomCheckbox
               checkboxProps={{
                 checked: row.original.done,
+                onChange: () => handleSwitchStatus(row.original),
               }}
             />
             {row.original.done ? "Done" : "In progress"}
@@ -200,6 +214,7 @@ const TodosContainer = () => {
           </CustomButton>
         </div>
       )}
+      {isInfiniteScrolling && <div ref={observerRef}></div>}
     </div>
   );
 };
