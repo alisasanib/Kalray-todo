@@ -1,5 +1,4 @@
 import { useCallback, useMemo, useState } from "react";
-
 import { CellProps, Column } from "react-table";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
@@ -9,12 +8,14 @@ import { SelectChangeEvent } from "@mui/material";
 import { Todo } from "../../types/todo.dto";
 import Input from "../common/input";
 import CustomCheckbox from "../common/checkbox";
+import Modal from "../common/modal";
 import CustomButton from "../common/button";
 import Select from "../common/select";
 import Table from "../common/table";
 import useFetchTodos from "../../hooks/useFetchTodos";
 import usePagination from "../../hooks/usePagination";
 import useSort from "../../hooks/useSort";
+import useModal from "../../hooks/useModal";
 import useObserver from "../../hooks/useObserver";
 import "./TodosContainer.sass";
 
@@ -22,12 +23,24 @@ const TodosContainer = () => {
   const { todos, setTodos, error, isLoading } = useFetchTodos();
   const [isInfiniteScrolling, setIsInfiniteScrolling] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPage, setItemsPerPage] = useState(10); // Default to 10 items per page
 
   const { displayedTodos, paginationIndex, setPaginationIndex, handlePaginationBackward, handlePaginationForward } =
     usePagination(todos, isInfiniteScrolling, searchTerm, itemsPerPage);
 
   const { sortConfig, handleSort } = useSort(todos, setTodos);
+
+  const {
+    selectedTodo,
+    isModalOpen,
+    isEditMode,
+    setIsModalOpen,
+    handleEdit,
+    handleDelete,
+    handleSaveTodo,
+    handleAddTask,
+    setSelectedTodo,
+  } = useModal(setTodos);
 
   const observerRef = useObserver(isInfiniteScrolling, () => setPaginationIndex((prev) => prev + 1));
 
@@ -126,14 +139,18 @@ const TodosContainer = () => {
         Header: "Actions",
         Cell: ({ row }: CellProps<Todo>) => (
           <div>
-            <CustomButton>Edit</CustomButton>
-            <CustomButton color='error'>Delete</CustomButton>
+            <CustomButton onClick={() => handleEdit(row.original)}>Edit</CustomButton>
+            <CustomButton
+              color='error'
+              onClick={() => handleDelete(row.original.id)}>
+              Delete
+            </CustomButton>
           </div>
         ),
         width: 40,
       },
     ],
-    [sortConfig]
+    [sortConfig, handleEdit]
   );
 
   return (
@@ -178,7 +195,8 @@ const TodosContainer = () => {
         )}
         <CustomButton
           sx={{ height: "50px" }}
-          variant='contained'>
+          variant='contained'
+          onClick={handleAddTask}>
           Add new task
         </CustomButton>
       </div>
@@ -215,6 +233,55 @@ const TodosContainer = () => {
         </div>
       )}
       {isInfiniteScrolling && <div ref={observerRef}></div>}
+      {isModalOpen && (
+        <Modal
+          title={isEditMode ? "Edit task" : "Create new task"}
+          visible={isModalOpen}
+          onOK={handleSaveTodo}
+          oKText='Save'
+          cancelText='Cancel'
+          handleClose={() => {
+            setIsModalOpen(false);
+            setSelectedTodo(null);
+          }}
+          handleCancel={() => {
+            setIsModalOpen(false);
+            setSelectedTodo(null);
+          }}
+          content={
+            <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                {isEditMode && <div style={{ width: "10%" }}>Status</div>}
+                <div style={{ width: "80%" }}>Task</div>
+              </div>
+              <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                {isEditMode && (
+                  <div style={{ width: "10%" }}>
+                    <CustomCheckbox
+                      checkboxProps={{
+                        checked: selectedTodo?.done,
+                        onChange: () => setSelectedTodo((prev) => (prev ? { ...prev, done: !prev.done } : prev)),
+                      }}
+                    />
+                  </div>
+                )}
+                <div style={{ width: "80%" }}>
+                  <Input
+                    inputProps={{
+                      multiline: true,
+                      placeholder: "Add task here",
+                      value: selectedTodo?.content || "",
+                      onChange: (e) => {
+                        setSelectedTodo((prev) => (prev ? { ...prev, content: e.target.value } : prev));
+                      },
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          }
+        />
+      )}
     </div>
   );
 };
