@@ -3,6 +3,8 @@ import { useCallback, useMemo, useState } from "react";
 import { CellProps, Column } from "react-table";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { SelectChangeEvent } from "@mui/material";
 import { Todo } from "../../types/todo.dto";
 import Input from "../common/input";
@@ -12,8 +14,8 @@ import Select from "../common/select";
 import Table from "../common/table";
 import useFetchTodos from "../../hooks/useFetchTodos";
 import usePagination from "../../hooks/usePagination";
+import useSort from "../../hooks/useSort";
 import "./TodosContainer.sass";
-
 
 const TodosContainer = () => {
   const { todos, setTodos, error, isLoading } = useFetchTodos();
@@ -23,6 +25,8 @@ const TodosContainer = () => {
 
   const { displayedTodos, paginationIndex, setPaginationIndex, handlePaginationBackward, handlePaginationForward } =
     usePagination(todos, isInfiniteScrolling, searchTerm, itemsPerPage);
+
+  const { sortConfig, handleSort } = useSort(todos, setTodos);
 
   const togglePaginationMode = useCallback(() => {
     setIsInfiniteScrolling((prev) => !prev);
@@ -53,10 +57,34 @@ const TodosContainer = () => {
           </div>
         ),
         width: "40px",
-        Header: () => <div style={{ cursor: "pointer", display: "flex", gap: 10, height: 20 }}>Status </div>,
+        Header: () => (
+          <div
+            onClick={() => handleSort("done")}
+            style={{ cursor: "pointer", display: "flex", gap: 10, height: 20 }}>
+            Status{" "}
+            {sortConfig.key === "done" &&
+              (sortConfig.ascending ? (
+                <KeyboardArrowUpIcon fontSize='small' />
+              ) : (
+                <KeyboardArrowDownIcon fontSize='small' />
+              ))}
+          </div>
+        ),
       },
       {
-        Header: () => <div style={{ cursor: "pointer", display: "flex", gap: 10, height: 20 }}>Content </div>,
+        Header: () => (
+          <div
+            onClick={() => handleSort("content")}
+            style={{ cursor: "pointer", display: "flex", gap: 10, height: 20 }}>
+            Content{" "}
+            {sortConfig.key === "content" &&
+              (sortConfig.ascending ? (
+                <KeyboardArrowUpIcon fontSize='small' />
+              ) : (
+                <KeyboardArrowDownIcon fontSize='small' />
+              ))}
+          </div>
+        ),
         accessor: "content",
         Cell: ({ row, cell }: CellProps<Todo>) => (
           <div className={row.original.done ? "cell-done" : ""}>{cell.value}</div>
@@ -64,7 +92,19 @@ const TodosContainer = () => {
         width: 300,
       },
       {
-        Header: () => <div style={{ cursor: "pointer", display: "flex", gap: 10, height: 20 }}>Completion Time </div>,
+        Header: () => (
+          <div
+            onClick={() => handleSort("done_time")}
+            style={{ cursor: "pointer", display: "flex", gap: 10, height: 20 }}>
+            Completion Time{" "}
+            {sortConfig.key === "done_time" &&
+              (sortConfig.ascending ? (
+                <KeyboardArrowUpIcon fontSize='small' />
+              ) : (
+                <KeyboardArrowDownIcon fontSize='small' />
+              ))}
+          </div>
+        ),
         accessor: "done_time",
         width: 300,
       },
@@ -79,7 +119,7 @@ const TodosContainer = () => {
         width: 40,
       },
     ],
-    []
+    [sortConfig]
   );
 
   return (
