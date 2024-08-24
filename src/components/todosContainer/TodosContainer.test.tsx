@@ -2,11 +2,7 @@ import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import TodosContainer from "./";
-import useFetchTodos from "../../hooks/useFetchTodos";
-import usePagination from "../../hooks/usePagination";
-import useSort from "../../hooks/useSort";
-import useModal from "../../hooks/useModal";
-import useObserver from "../../hooks/useObserver";
+import { useFetchTodos, usePagination, useSort, useModal, useObserver } from "../../hooks";
 
 jest.mock("../../hooks/useFetchTodos");
 jest.mock("../../hooks/usePagination");

@@ -1,4 +1,4 @@
-import Tooltip from '../tooltip/Tooltip';
+import Tooltip from '../tooltip';
 
 import { ReactComponent as BarTogglerOuterIcon } from '../../../static/img/bar-toggler-outer-icon@2x.svg';
 import { ReactComponent as ChevronRightIcon } from '../../../static/img/chevron-right@2x.svg';

@@ -1,7 +1,7 @@
 import { HTMLAttributeAnchorTarget, useContext } from 'react';
 
 import { AppContext } from '../../context/AppContext';
-import Tooltip from '../common/tooltip/Tooltip';
+import Tooltip from '../common/tooltip';
 
 import './LeftBarMenuItem.sass';
 

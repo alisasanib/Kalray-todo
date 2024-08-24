@@ -1,12 +1,7 @@
-import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import TodosContainer from ".";
-import useFetchTodosHook from "../../hooks/useFetchTodos";
-import usePaginationHook from "../../hooks/usePagination";
-import useSortHook from "../../hooks/useSort";
-import useModalHook from "../../hooks/useModal";
-import useObserverHook from "../../hooks/useObserver";
+import { useFetchTodos, usePagination, useSort, useModal, useObserver } from "../../hooks";
 import { Todo } from "../../types/todo.dto";
 
 jest.mock("../../hooks/useFetchTodos");
@@ -22,14 +17,14 @@ describe("TodosContainer", () => {
   ];
 
   beforeEach(() => {
-    (useFetchTodosHook as jest.Mock).mockReturnValue({
+    (useFetchTodos as jest.Mock).mockReturnValue({
       todos: todosMockData,
       setTodos: jest.fn(),
       error: null,
       isLoading: false,
     });
 
-    (usePaginationHook as jest.Mock).mockImplementation((todos: Todo[], isInfiniteScrolling, searchTerm) => {
+    (usePagination as jest.Mock).mockImplementation((todos: Todo[], isInfiniteScrolling, searchTerm) => {
       const filteredTodos = todos.filter((todo) => todo.content.toLowerCase().includes(searchTerm.toLowerCase()));
 
       return {
@@ -41,12 +36,12 @@ describe("TodosContainer", () => {
       };
     });
 
-    (useSortHook as jest.Mock).mockReturnValue({
+    (useSort as jest.Mock).mockReturnValue({
       sortConfig: { key: "content", ascending: true },
       handleSort: jest.fn(),
     });
 
-    (useModalHook as jest.Mock).mockReturnValue({
+    (useModal as jest.Mock).mockReturnValue({
       selectedTodo: null,
       isModalOpen: false,
       isEditMode: false,
@@ -58,13 +53,13 @@ describe("TodosContainer", () => {
       setSelectedTodo: jest.fn(),
     });
 
-    (useObserverHook as jest.Mock).mockReturnValue({
+    (useObserver as jest.Mock).mockReturnValue({
       observerRef: { current: null },
     });
   });
 
   it("should render loading state", () => {
-    (useFetchTodosHook as jest.Mock).mockReturnValueOnce({
+    (useFetchTodos as jest.Mock).mockReturnValueOnce({
       todos: [],
       setTodos: jest.fn(),
       error: null,
@@ -77,7 +72,7 @@ describe("TodosContainer", () => {
   });
 
   it("renders error message when there is an error", () => {
-    (useFetchTodosHook as jest.Mock).mockReturnValueOnce({
+    (useFetchTodos as jest.Mock).mockReturnValueOnce({
       todos: [],
       setTodos: jest.fn(),
       error: "Error loading todos",
@@ -109,7 +104,7 @@ describe("TodosContainer", () => {
   });
 
   it("should add a new todo", async () => {
-    (useModalHook as jest.Mock).mockReturnValueOnce({
+    (useModal as jest.Mock).mockReturnValueOnce({
       selectedTodo: { id: 3, content: "New Todo", done: false },
       isModalOpen: true,
       isEditMode: false,

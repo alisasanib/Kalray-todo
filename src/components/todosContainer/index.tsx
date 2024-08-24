@@ -7,17 +7,8 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import WarningIcon from "@mui/icons-material/Warning";
 import { SelectChangeEvent } from "@mui/material";
 import { Todo } from "../../types/todo.dto";
-import Input from "../common/input";
-import CustomCheckbox from "../common/checkbox";
-import Modal from "../common/modal";
-import CustomButton from "../common/button";
-import Select from "../common/select";
-import Table from "../common/table";
-import useFetchTodos from "../../hooks/useFetchTodos";
-import usePagination from "../../hooks/usePagination";
-import useSort from "../../hooks/useSort";
-import useModal from "../../hooks/useModal";
-import useObserver from "../../hooks/useObserver";
+import { Select, Button, Modal, Checkbox, Input, Table } from "../common";
+import { useFetchTodos, usePagination, useSort, useModal, useObserver } from "../../hooks";
 import "./TodosContainer.sass";
 
 const TodosContainer = () => {
@@ -75,7 +66,7 @@ const TodosContainer = () => {
         accessor: "done",
         Cell: ({ row }: CellProps<Todo>) => (
           <div className={row.original.done ? "status-done" : "status-progress"}>
-            <CustomCheckbox
+            <Checkbox
               checkboxProps={{
                 checked: row.original.done,
                 onChange: () => handleSwitchStatus(row.original),
@@ -140,12 +131,12 @@ const TodosContainer = () => {
         Header: "Actions",
         Cell: ({ row }: CellProps<Todo>) => (
           <div>
-            <CustomButton onClick={() => handleEdit(row.original)}>Edit</CustomButton>
-            <CustomButton
+            <Button onClick={() => handleEdit(row.original)}>Edit</Button>
+            <Button
               color='error'
               onClick={() => handleDelete(row.original.id)}>
               Delete
-            </CustomButton>
+            </Button>
           </div>
         ),
         width: 40,
@@ -157,7 +148,7 @@ const TodosContainer = () => {
   return (
     <div>
       <div className='action-buttons'>
-        <CustomCheckbox
+        <Checkbox
           labelProps={{
             label: "Infinite scrolling",
             sx: { marginRight: 0 },
@@ -184,14 +175,13 @@ const TodosContainer = () => {
           startIcon={<SearchIcon />}
           endIcon={<CloseIcon />}
         />
-        <CustomButton
+        <Button
           sx={{ height: "50px" }}
           variant='contained'
           onClick={handleAddTask}
-          disabled={!!error || isLoading}
-          >
+          disabled={!!error || isLoading}>
           Add new task
-        </CustomButton>
+        </Button>
       </div>
       {isLoading && <p>Loading todos...</p>}
       {error && (
@@ -219,15 +209,15 @@ const TodosContainer = () => {
             ]}
             style={{ height: 30 }}
           />
-          <CustomButton
+          <Button
             disabled={paginationIndex === 0}
-            onClick={handlePaginationBackward}>{`<`}</CustomButton>
+            onClick={handlePaginationBackward}>{`<`}</Button>
           {paginationIndex + 1}
-          <CustomButton
+          <Button
             disabled={paginationIndex + 1 >= Math.ceil(todos.length / itemsPerPage)}
             onClick={handlePaginationForward}>
             {`>`}
-          </CustomButton>
+          </Button>
         </div>
       )}
       {isInfiniteScrolling && <div ref={observerRef}></div>}
@@ -255,7 +245,7 @@ const TodosContainer = () => {
               <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                 {isEditMode && (
                   <div style={{ width: "10%" }}>
-                    <CustomCheckbox
+                    <Checkbox
                       checkboxProps={{
                         checked: selectedTodo?.done,
                         onChange: () => setSelectedTodo((prev) => (prev ? { ...prev, done: !prev.done } : prev)),

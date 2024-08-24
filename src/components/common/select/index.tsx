@@ -23,7 +23,11 @@ const CustomSelect = (props: CustomSelectProps) => {
       label='Age'
       onChange={props.onChange}>
       {props.options.map((option) => (
-        <MenuItem value={option.value}>{option.label}</MenuItem>
+        <MenuItem
+          key={option.value}
+          value={option.value}>
+          {option.label}
+        </MenuItem>
       ))}
     </Select>
   );
