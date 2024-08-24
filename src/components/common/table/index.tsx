@@ -20,13 +20,12 @@ const Table = <TData extends object>({ items, columns }: TableProps<TData>) => {
         {...getTableProps()}
         className='table'>
         <thead>
-          {headerGroups.map((headerGroup) => (
+          {headerGroups.map((headerGroup, index) => (
             <tr
               className='table-header-row'
               {...headerGroup.getHeaderGroupProps()}
-              key={headerGroup.id}>
+              key={index}>
               {headerGroup.headers.map((column) => {
-                console.log("column.getHeaderProps", (column.getHeaderProps() as any).onClick);
                 return (
                   <th
                     className='table-header'
@@ -43,7 +42,7 @@ const Table = <TData extends object>({ items, columns }: TableProps<TData>) => {
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {rows.map((row, index) => {
+          {rows.map((row) => {
             prepareRow(row);
             return (
               <tr
@@ -53,7 +52,7 @@ const Table = <TData extends object>({ items, columns }: TableProps<TData>) => {
                   <td
                     className='table-cell'
                     {...cell.getCellProps()}
-                    key={cell.column.id}>
+                    key={`${row.id}-${cell.column.id}`}>
                     {cell.render("Cell")}
                   </td>
                 ))}
