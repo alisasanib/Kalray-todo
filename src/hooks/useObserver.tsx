@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 
-// Custom Hook: Handle Intersection Observer for Infinite Scrolling
 const useObserver = (isInfiniteScrolling: boolean, loadMore: () => void) => {
   const observerRef = useRef<HTMLDivElement | null>(null);
 

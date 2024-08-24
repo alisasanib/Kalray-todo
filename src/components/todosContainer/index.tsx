@@ -23,7 +23,7 @@ const TodosContainer = () => {
   const { todos, setTodos, error, isLoading } = useFetchTodos();
   const [isInfiniteScrolling, setIsInfiniteScrolling] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [itemsPerPage, setItemsPerPage] = useState(10); // Default to 10 items per page
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   const { displayedTodos, paginationIndex, setPaginationIndex, handlePaginationBackward, handlePaginationForward } =
     usePagination(todos, isInfiniteScrolling, searchTerm, itemsPerPage);

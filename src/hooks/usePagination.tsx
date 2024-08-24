@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Todo } from "../types/todo.dto";
 
-// Custom Hook: Handle Pagination
 const usePagination = (todos: Todo[], isInfiniteScrolling: boolean, searchTerm: string, itemsPerPage: number = 10) => {
   const [paginationIndex, setPaginationIndex] = useState(0);
   const [displayedTodos, setDisplayedTodos] = useState<Todo[]>([]);
