@@ -7,7 +7,6 @@ interface CustomCheckboxProps {
 }
 
 const CustomCheckbox: React.FC<CustomCheckboxProps> = (props: CustomCheckboxProps) => {
-  const label = { inputProps: { "aria-label": props.labelProps?.label } };
   return (
     <FormControlLabel
       {...props.labelProps}

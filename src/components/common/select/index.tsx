@@ -1,5 +1,5 @@
 import MenuItem from "@mui/material/MenuItem";
-import Select, { SelectChangeEvent, SelectProps } from "@mui/material/Select";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 type Option = {
   value: number;

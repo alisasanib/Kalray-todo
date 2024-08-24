@@ -45,20 +45,26 @@ const TodosContainer: React.FC = () => {
     setSearchTerm(e.target.value);
   }, []);
 
-  const handleSwitchStatus = useCallback((row: Todo) => {
-    setTodos((prevState) =>
-      prevState.map((todo) =>
-        todo.id === row.id
-          ? { ...todo, done: !todo.done, done_time: todo.done ? null : new Date().toISOString().slice(0, 19) }
-          : todo
-      )
-    );
-  }, []);
+  const handleSwitchStatus = useCallback(
+    (row: Todo) => {
+      setTodos((prevState) =>
+        prevState.map((todo) =>
+          todo.id === row.id
+            ? { ...todo, done: !todo.done, done_time: todo.done ? null : new Date().toISOString().slice(0, 19) }
+            : todo
+        )
+      );
+    },
+    [setTodos]
+  );
 
-  const handleItemsPerPageChange = useCallback((event: SelectChangeEvent<number>) => {
-    setItemsPerPage(Number(event.target.value));
-    setPaginationIndex(0);
-  }, []);
+  const handleItemsPerPageChange = useCallback(
+    (event: SelectChangeEvent<number>) => {
+      setItemsPerPage(Number(event.target.value));
+      setPaginationIndex(0);
+    },
+    [setPaginationIndex]
+  );
 
   const columns: Column<Todo>[] = useMemo(
     () => [
@@ -142,7 +148,7 @@ const TodosContainer: React.FC = () => {
         width: 40,
       },
     ],
-    [sortConfig, handleEdit]
+    [sortConfig, handleEdit, handleDelete, handleSort, handleSwitchStatus]
   );
 
   return (
